@@ -67,16 +67,5 @@ export default function Page() {
     }
   };
 
-  return (
-    // 추후 레이아웃
-    <Box
-      as="section"
-      width="100%"
-      height="100%"
-      display="flex"
-      justifyContent={"center"}
-    >
-      <Box width={"100%"} maxWidth={726} display="flex" height="100%"></Box>
-    </Box>
-  );
+  return <Box width={"100%"} maxWidth={726} display="flex" height="100%"></Box>;
 }
