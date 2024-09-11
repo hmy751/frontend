@@ -23,7 +23,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={noto_sans_kr.className}>
         <ChakraProvider>{children}</ChakraProvider>
-        {children}
         <AudioPlayer />
       </body>
     </html>
