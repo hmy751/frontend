@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { Box } from "@chakra-ui/react";
 
 import Recorder from "recorder-js";
+import ChatArticle from "./_components/InterviewrProfile";
 
 export default function Page() {
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -67,5 +68,9 @@ export default function Page() {
     }
   };
 
-  return <Box width={"100%"} maxWidth={726} display="flex" height="100%"></Box>;
+  return (
+    <Box width={"100%"} maxWidth={726} display="flex" height="100%">
+      <ChatArticle></ChatArticle>
+    </Box>
+  );
 }
