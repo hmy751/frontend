@@ -17,7 +17,8 @@
     "next": "14.2.8",
     "react": "^18",
     "react-dom": "^18",
-    "recorder-js": "^1.0.7"
+    "recorder-js": "^1.0.7",
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^8.2.9",
