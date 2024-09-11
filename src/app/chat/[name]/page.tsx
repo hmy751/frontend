@@ -67,20 +67,5 @@ export default function Page() {
     }
   };
 
-  return (
-    <Box
-      as="section"
-      width="100%"
-      height="100%"
-      border="1px"
-      borderColor="black"
-      paddingX="10"
-    >
-      <Box display="flex" border="1px solid" height="100%" borderColor="black">
-        <button onClick={handleRecord}>녹음</button>
-        <button onClick={handleFinishRecord}>종료</button>
-        <button onClick={handleSendNaverSST}>네이버</button>
-      </Box>
-    </Box>
-  );
+  return <Box width={"100%"} maxWidth={726} display="flex" height="100%"></Box>;
 }
