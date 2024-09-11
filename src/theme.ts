@@ -7,5 +7,8 @@ export const theme = extendTheme({
     font: {
       gray: "#A8A69D",
     },
+    gray: {
+      100: "#EDF2F7",
+    },
   },
 });

@@ -1,10 +1,29 @@
 "use client";
 
 import { useRef } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 
 import Recorder from "recorder-js";
 import ChatArticle from "./_components/InterviewrProfile";
+
+const InterviewerProfileWrapper = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  return (
+    <>
+      <Flex
+        height={"max-content"}
+        paddingY={"40px"}
+        borderBottom={"1px solid"}
+        borderColor={"gray.100"}
+      >
+        {children}
+      </Flex>
+    </>
+  );
+};
 
 export default function Page() {
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -70,7 +89,9 @@ export default function Page() {
 
   return (
     <Box width={"100%"} maxWidth={726} display="flex" height="100%">
-      <ChatArticle></ChatArticle>
+      <InterviewerProfileWrapper>
+        <ChatArticle />
+      </InterviewerProfileWrapper>
     </Box>
   );
 }
