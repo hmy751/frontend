@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import ChakraProvider from "../components/ChakraProvider";
+import { theme } from "@/theme";
 import AudioPlayer from "../components/AudioPlayer";
 
 const noto_sans_kr = Noto_Sans_KR({
@@ -22,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={noto_sans_kr.className}>
-        <ChakraProvider>{children}</ChakraProvider>
+        <ChakraProvider theme={theme}>{children}</ChakraProvider>
         <AudioPlayer />
       </body>
     </html>

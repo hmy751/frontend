@@ -1,0 +1,55 @@
+import { createContext, useMemo, useContext } from "react";
+import Avatar from "@/components/Avatar";
+import { Box, Flex } from "@chakra-ui/react";
+
+export type ChatType = "Interviewer" | "Interviewee" | "";
+
+interface ChatArticleProps extends React.PropsWithChildren {
+  type: ChatType;
+}
+
+interface ChatSpeechProps {
+  status: string; // loading, error, success
+  text: string | null;
+}
+
+const ChatArticleContext = createContext<{ type: ChatType }>({
+  type: "",
+});
+
+function ChatAvatar({ src }: { src: string }) {
+  return (
+    <Flex justifyContent={"flex-start"} height={"100%"}>
+      <Avatar src={src} />
+    </Flex>
+  );
+}
+
+function ChatSpeech({ status, text }: ChatSpeechProps) {
+  const { type } = useContext(ChatArticleContext);
+  const color = type === "Interviewer" ? "mainGray" : "mainBlue";
+  return (
+    <Box borderRadius={"10px"} backgroundColor={color} padding={"10px"}>
+      {text}
+    </Box>
+  );
+}
+
+function ChatArticle({ type, children }: ChatArticleProps) {
+  const ContextValue = useMemo(() => {
+    return { type };
+  }, [type]);
+
+  return (
+    <ChatArticleContext.Provider value={ContextValue}>
+      <Flex alignItems={"center"} gap="10px">
+        {children}
+      </Flex>
+    </ChatArticleContext.Provider>
+  );
+}
+
+ChatArticle.Avatar = ChatAvatar;
+ChatArticle.Speech = ChatSpeech;
+
+export default ChatArticle;

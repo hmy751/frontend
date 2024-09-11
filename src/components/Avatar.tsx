@@ -5,7 +5,7 @@ import {
 
 interface AvatarProps extends CAvatarProps {
   src: string;
-  size: string;
+  size?: string;
 }
 
 export default function Avatar({ src, size, ...restProps }: AvatarProps) {
