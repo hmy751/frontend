@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { Box, Flex } from "@chakra-ui/react";
 
 import Recorder from "recorder-js";
-import ChatArticle from "./_components/InterviewrProfile";
+import InterviewerProfile from "./_components/InterviewerProfile";
 
 const InterviewerProfileWrapper = ({
   children,
@@ -90,7 +90,7 @@ export default function Page() {
   return (
     <Box width={"100%"} maxWidth={726} display="flex" height="100%">
       <InterviewerProfileWrapper>
-        <ChatArticle />
+        <InterviewerProfile />
       </InterviewerProfileWrapper>
     </Box>
   );
