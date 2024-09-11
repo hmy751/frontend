@@ -2,8 +2,9 @@ export const checkFileWave = (audioFile: File) => {
   const reader = new FileReader();
 
   reader.onloadend = (event: ProgressEvent<FileReader>) => {
-    const arrayBuffer = event.target!.result!;
-    const uint8Array = new Uint8Array(arrayBuffer);
+    if (!event.target) return;
+    const arrayBuffer = event.target.result;
+    const uint8Array = new Uint8Array(arrayBuffer as ArrayBufferLike);
 
     // 파일의 첫 12바이트를 읽어 포맷 확인 ("RIFF" + "WAVE")
     const header = String.fromCharCode(...uint8Array.slice(0, 4)); // "RIFF" 확인
