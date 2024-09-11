@@ -10,5 +10,7 @@ export const theme = extendTheme({
     gray: {
       100: "#EDF2F7",
     },
+    mainBlue: "#D4E3FB",
+    mainGray: "#F3F6F7",
   },
 });
