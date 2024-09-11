@@ -4,6 +4,7 @@ import { Box, Flex, Grid, Stack } from "@chakra-ui/react";
 import React from "react";
 import Image from "next/image";
 import InterviewerCard from "./_components/InterviewerCard";
+import { useAudioStore } from "@/store/useAudioStore";
 
 const interviewerList = [
   {
@@ -28,6 +29,9 @@ interface Interviewer {
 const InterviewerChoicePage = () => {
   const [selectedInterviewer, setSelectedInterviewer] =
     React.useState<Interviewer | null>(null);
+
+  const { play } = useAudioStore();
+
   return (
     <Flex
       mx={"auto"}
@@ -51,7 +55,10 @@ const InterviewerChoicePage = () => {
             key={interviewer.id}
             id={interviewer.id}
             imgUrl={interviewer.imgUrl}
-            onClick={() => setSelectedInterviewer(interviewer)}
+            onClick={() => {
+              setSelectedInterviewer(interviewer);
+              play();
+            }}
           />
         ))}
       </Flex>
