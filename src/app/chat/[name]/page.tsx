@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Box, Flex } from "@chakra-ui/react";
 
 import Recorder from "recorder-js";
 import InterviewerProfile from "./_components/InterviewerProfile";
 import ChatArticle from "./_components/ChatArticle";
+import { detectSilence } from "./_utils";
 
 const InterviewerProfileWrapper = ({
   children,
@@ -37,22 +38,47 @@ const ChatWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default function Page() {
-  const audioContextRef = useRef<AudioContext | null>(null);
   const recorderRef = useRef<Recorder | null>(null);
+  const [isRecording, setIsRecording] = useState<
+    "recording" | "finished" | null
+  >(null);
+
   const audioFileRef = useRef<File | null>(null);
 
   const handleRecord = async () => {
     const { mediaDevices } = navigator;
     const stream = await mediaDevices.getUserMedia({ audio: true });
 
-    audioContextRef.current = new window.AudioContext();
+    const audioContext = new window.AudioContext();
+    const analyserNode = audioContext.createAnalyser();
+    analyserNode.fftSize = 2048;
+    const dataArray = new Uint8Array(analyserNode.fftSize);
 
-    const recorderInstance = new Recorder(audioContextRef.current);
+    const recorder = new Recorder(audioContext);
+    recorderRef.current = recorder;
 
-    recorderRef.current = recorderInstance;
-    recorderRef.current.init(stream);
-    recorderRef.current.start();
+    await recorderRef.current.init(stream);
+
+    recorderRef.current.start().then(() => setIsRecording("recording"));
+
+    const source = audioContext.createMediaStreamSource(stream);
+    source.connect(analyserNode);
+
+    detectSilence(analyserNode, dataArray, setIsRecording);
   };
+
+  useEffect(() => {
+    if (recorderRef.current === null) return;
+    if (isRecording === null || isRecording === "recording") return;
+
+    if (isRecording === "finished") {
+      console.log("🔥finished");
+    }
+
+    return () => {
+      setIsRecording(null);
+    };
+  }, [isRecording]);
 
   const handleFinishRecord = async () => {
     if (recorderRef.current === null) return;
@@ -98,6 +124,18 @@ export default function Page() {
     }
   };
 
+  const recordingState = () => {
+    if (isRecording === null || isRecording === "finished") {
+      return "녹음";
+    }
+
+    if (isRecording === "recording") {
+      return "녹음중";
+    }
+
+    return "녹음";
+  };
+
   return (
     <Box
       width={"100%"}
@@ -137,6 +175,7 @@ export default function Page() {
           />
         </ChatArticle>
       </ChatWrapper>
+      <button onClick={handleRecord}>{recordingState()}</button>
     </Box>
   );
 }
