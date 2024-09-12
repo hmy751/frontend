@@ -1,31 +1,17 @@
-"use client";
+import { useTexture } from "@react-three/drei";
 
-import { Box } from "@chakra-ui/react";
-import { motion } from "framer-motion";
-import Image from "next/image";
-
-const MotionBox = motion(Box);
-
-interface InterviewerCardProps {
-  id: number;
+const InterviewerCard: React.FC<{
   imgUrl: string;
-  onClick?: () => void;
-}
+  position: [number, number, number];
+  onClick: () => void;
+}> = ({ imgUrl, onClick, position }) => {
+  const [texture] = useTexture([imgUrl]);
 
-const InterviewerCard = ({ id, imgUrl, onClick }: InterviewerCardProps) => {
   return (
-    <MotionBox
-      width="240px"
-      height="240px"
-      borderRadius="8px"
-      backgroundColor="white"
-      border="1px solid"
-      overflow="hidden"
-      boxShadow="lg"
-      onClick={onClick}
-    >
-      <Image src={imgUrl} width={240} height={240} alt="ff" />
-    </MotionBox>
+    <mesh onClick={onClick} position={position}>
+      <planeGeometry args={[3, 3]} />
+      <meshBasicMaterial map={texture} />
+    </mesh>
   );
 };
 
