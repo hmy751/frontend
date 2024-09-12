@@ -10,7 +10,7 @@ export const makeStore = () => {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(sagaMiddleware),
     reducer: {
-      counter: chatReducer,
+      chat: chatReducer,
     },
   });
 
