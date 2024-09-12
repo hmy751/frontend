@@ -20,3 +20,42 @@ export const checkFileWave = (audioFile: File) => {
   // 파일의 첫 12바이트를 읽기 위해 slice 사용
   reader.readAsArrayBuffer(audioFile.slice(0, 12));
 };
+
+export const detectSilence = (
+  analyser: AnalyserNode,
+  dataArray: Uint8Array,
+  setIsRecording: React.Dispatch<
+    React.SetStateAction<"finished" | "recording" | null>
+  >,
+  silenceThreshold = 0.01,
+  timeout = 1000
+) => {
+  let silenceStart = performance.now();
+
+  function checkSilence() {
+    analyser.getByteTimeDomainData(dataArray);
+
+    // RMS 계산
+    let rms = 0;
+    for (let i = 0; i < dataArray.length; i++) {
+      const normalized = dataArray[i] / 128 - 1;
+      rms += normalized * normalized;
+    }
+    rms = Math.sqrt(rms / dataArray.length);
+
+    if (rms < silenceThreshold) {
+      // 음성 중지 감지 (특정 시간 동안 rms가 임계값 이하인 경우)
+      if (performance.now() - silenceStart > timeout) {
+        setIsRecording("finished");
+        return;
+      }
+    } else {
+      // 음성이 감지되면 타이머를 초기화
+      silenceStart = performance.now();
+    }
+
+    requestAnimationFrame(checkSilence);
+  }
+
+  checkSilence();
+};
