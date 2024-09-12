@@ -37,6 +37,8 @@ const ChatWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default function Page() {
+  const [currentMessage, setCurrentMessage] = useState("");
+
   return (
     <Box
       width={"100%"}
@@ -76,7 +78,7 @@ export default function Page() {
           />
         </ChatArticle>
       </ChatWrapper>
-      <RecordButton />
+      <RecordButton setCurrentMessage={setCurrentMessage} />
     </Box>
   );
 }

@@ -3,7 +3,11 @@ import { detectSilence } from "../_utils";
 
 import Recorder from "recorder-js";
 
-export default function RecordButton() {
+export default function RecordButton({
+  setCurrentMessage,
+}: {
+  setCurrentMessage: React.Dispatch<React.SetStateAction<string>>;
+}) {
   const recorderRef = useRef<Recorder | null>(null);
   const [isRecording, setIsRecording] = useState<
     "recording" | "finished" | null
@@ -78,6 +82,7 @@ export default function RecordButton() {
 
       const data = await response.json();
       console.log("STT Result:", data);
+      setCurrentMessage(data.text);
     } catch (error) {
       console.error("Error with STT API request:", error);
     } finally {

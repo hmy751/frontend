@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     }
 
     const data = await response.json();
-    return new Response(data, { status: 200 });
+    return new Response(JSON.stringify(data), { status: 200 });
   } catch (error: unknown) {
     if (error instanceof Error) {
       return new Response(error.message, { status: 500 });
