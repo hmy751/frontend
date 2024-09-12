@@ -43,8 +43,6 @@ export default function Page() {
     "recording" | "finished" | null
   >(null);
 
-  const audioFileRef = useRef<File | null>(null);
-
   const handleRecord = async () => {
     const { mediaDevices } = navigator;
     const stream = await mediaDevices.getUserMedia({ audio: true });
@@ -72,7 +70,7 @@ export default function Page() {
     if (isRecording === null || isRecording === "recording") return;
 
     if (isRecording === "finished") {
-      console.log("🔥finished");
+      finishRecord();
     }
 
     return () => {
@@ -80,16 +78,11 @@ export default function Page() {
     };
   }, [isRecording]);
 
-  const handleFinishRecord = async () => {
+  const finishRecord = async () => {
     if (recorderRef.current === null) return;
 
     const { blob } = await recorderRef.current.stop();
     const audioFile = new File([blob], "recording.wav", { type: "audio/wav" });
-    audioFileRef.current = audioFile;
-  };
-
-  const handleSendNaverSST = async () => {
-    const audioFile = audioFileRef.current;
 
     if (!audioFile) {
       console.error("No audio file to send.");
@@ -121,6 +114,8 @@ export default function Page() {
       console.log("STT Result:", data);
     } catch (error) {
       console.error("Error with STT API request:", error);
+    } finally {
+      setIsRecording(null);
     }
   };
 
