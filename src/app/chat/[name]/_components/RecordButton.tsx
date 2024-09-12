@@ -2,16 +2,15 @@ import { useRef, useState, useEffect } from "react";
 import { detectSilence } from "../_utils";
 
 import Recorder from "recorder-js";
+import { useDispatch } from "react-redux";
+import { SEND_RECORD } from "@/store/redux/features/chat/slice";
 
-export default function RecordButton({
-  setCurrentMessage,
-}: {
-  setCurrentMessage: React.Dispatch<React.SetStateAction<string>>;
-}) {
+export default function RecordButton() {
   const recorderRef = useRef<Recorder | null>(null);
   const [isRecording, setIsRecording] = useState<
     "recording" | "finished" | null
   >(null);
+  const dispatch = useDispatch();
 
   const handleRecord = async () => {
     const { mediaDevices } = navigator;
@@ -54,6 +53,8 @@ export default function RecordButton({
     const { blob } = await recorderRef.current.stop();
     const audioFile = new File([blob], "recording.wav", { type: "audio/wav" });
 
+    setIsRecording(null);
+
     if (!audioFile) {
       console.error("No audio file to send.");
       return;
@@ -70,24 +71,7 @@ export default function RecordButton({
     formData.append("media", audioFile);
     formData.append("params", JSON.stringify(params));
 
-    try {
-      const response = await fetch(`/api/chat`, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("STT API request failed");
-      }
-
-      const data = await response.json();
-      console.log("STT Result:", data);
-      setCurrentMessage(data.text);
-    } catch (error) {
-      console.error("Error with STT API request:", error);
-    } finally {
-      setIsRecording(null);
-    }
+    dispatch({ type: SEND_RECORD, payload: { formData } });
   };
 
   const recordingState = () => {
