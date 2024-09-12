@@ -3,6 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { StatusType } from "@/store/redux/type";
 
 interface ChatContent {
+  status: StatusType;
   id: bigint | null;
   speaker: "user" | "bot";
   content: string;
@@ -10,22 +11,10 @@ interface ChatContent {
 
 interface ChatState {
   contents: ChatContent[];
-  currentChat: {
-    status: StatusType;
-    id: bigint | null;
-    speaker: "user" | "bot";
-    content: string;
-  };
 }
 
 const initialState: ChatState = {
   contents: [],
-  currentChat: {
-    status: "idle",
-    id: null,
-    speaker: "user",
-    content: "",
-  },
 };
 
 const slice = createSlice({
@@ -38,14 +27,16 @@ const slice = createSlice({
       } else {
         state.contents = [];
       }
-
-      state.currentChat = initialState.currentChat;
     },
-    initializeCurrentChat: (state) => {
-      state.currentChat = initialState.currentChat;
-    },
+    triggerChat: () => {},
+    pushContent: () => {},
+    updateContent: () => {},
+    removeContent: () => {},
   },
 });
 
-export const { initializeChatState, initializeCurrentChat } = slice.actions;
+export const { initializeChatState } = slice.actions;
+
+export const SEND_RECORD = "test/GET_CHECK_SESSION" as const;
+
 export default slice.reducer;
