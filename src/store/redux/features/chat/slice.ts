@@ -21,7 +21,10 @@ const slice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    initializeChatState: (state, action: PayloadAction<ChatContent[]>) => {
+    initializeChatState: (
+      state,
+      action: PayloadAction<ChatContent[] | null>
+    ) => {
       if (action.payload?.length) {
         state.contents = [...action.payload];
       } else {
@@ -43,6 +46,7 @@ const slice = createSlice({
     updateContent: (state, action: PayloadAction<{ content: string }>) => {
       state.contents[state.contents.length - 1].content =
         action.payload.content;
+      state.contents[state.contents.length - 1].status = "success";
     },
     removeContent: (state) => {
       state.contents.pop();

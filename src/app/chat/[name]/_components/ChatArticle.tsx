@@ -30,7 +30,7 @@ function ChatSpeech({ status, text }: ChatSpeechProps) {
   const color = type === "bot" ? "mainGray" : "mainBlue";
   return (
     <Box borderRadius={"10px"} backgroundColor={color} padding={"10px"}>
-      {text}
+      {status === "loading" ? "..." : `${text}`}
     </Box>
   );
 }
