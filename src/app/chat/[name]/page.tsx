@@ -39,7 +39,6 @@ const ChatWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default function Page() {
-  const [currentMessage, setCurrentMessage] = useState("");
   const chatContents = useSelector(selectChat);
 
   return (
@@ -71,25 +70,8 @@ export default function Page() {
             </ChatArticle>
           );
         })}
-        {/* <ChatArticle type={"bot"}>
-          <ChatArticle.Avatar src="/assets/images/elon_musk.png" />
-          <ChatArticle.Speech status="success" text="입력 테스트 입력 테스" />
-        </ChatArticle>
-
-        <ChatArticle type={"user"}>
-          <ChatArticle.Avatar src="/assets/images/elon_musk.png" />
-          <ChatArticle.Speech status="success" text="입력 테스트 입력 테스트" />
-        </ChatArticle>
-
-        <ChatArticle type={"bot"}>
-          <ChatArticle.Avatar src="/assets/images/elon_musk.png" />
-          <ChatArticle.Speech
-            status="success"
-            text="입력 테스트 입력 테스트 입력 테스트입"
-          />
-        </ChatArticle> */}
       </ChatWrapper>
-      <RecordButton setCurrentMessage={setCurrentMessage} />
+      <RecordButton />
     </Box>
   );
 }

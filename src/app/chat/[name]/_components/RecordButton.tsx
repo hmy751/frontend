@@ -5,11 +5,7 @@ import Recorder from "recorder-js";
 import { useDispatch } from "react-redux";
 import { SEND_RECORD } from "@/store/redux/features/chat/slice";
 
-export default function RecordButton({
-  setCurrentMessage,
-}: {
-  setCurrentMessage: React.Dispatch<React.SetStateAction<string>>;
-}) {
+export default function RecordButton() {
   const recorderRef = useRef<Recorder | null>(null);
   const [isRecording, setIsRecording] = useState<
     "recording" | "finished" | null
