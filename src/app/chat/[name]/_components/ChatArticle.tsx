@@ -2,7 +2,7 @@ import { createContext, useMemo, useContext } from "react";
 import Avatar from "@/components/Avatar";
 import { Box, Flex } from "@chakra-ui/react";
 
-export type ChatType = "Interviewer" | "Interviewee" | "";
+export type ChatType = "user" | "bot" | "";
 
 interface ChatArticleProps extends React.PropsWithChildren {
   type: ChatType;
@@ -27,7 +27,7 @@ function ChatAvatar({ src }: { src: string }) {
 
 function ChatSpeech({ status, text }: ChatSpeechProps) {
   const { type } = useContext(ChatArticleContext);
-  const color = type === "Interviewer" ? "mainGray" : "mainBlue";
+  const color = type === "bot" ? "mainGray" : "mainBlue";
   return (
     <Box borderRadius={"10px"} backgroundColor={color} padding={"10px"}>
       {text}
@@ -42,7 +42,11 @@ function ChatArticle({ type, children }: ChatArticleProps) {
 
   return (
     <ChatArticleContext.Provider value={ContextValue}>
-      <Flex alignItems={"center"} gap="10px">
+      <Flex
+        alignItems={"center"}
+        gap="10px"
+        justifyContent={type !== "user" ? "flex-start" : "flex-end"}
+      >
         {children}
       </Flex>
     </ChatArticleContext.Provider>

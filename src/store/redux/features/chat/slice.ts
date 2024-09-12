@@ -7,6 +7,7 @@ interface ChatContent {
   id: bigint | null;
   speaker: "user" | "bot";
   content: string;
+  timeStamp: Date;
 }
 
 interface ChatState {
@@ -28,14 +29,35 @@ const slice = createSlice({
         state.contents = [];
       }
     },
-    triggerChat: () => {},
-    pushContent: () => {},
-    updateContent: () => {},
-    removeContent: () => {},
+    triggerChat: (
+      state,
+      action: PayloadAction<{ id: bigint; speaker: "user" | "bot" }>
+    ) => {
+      const current = {
+        status: "loading" as "loading",
+        id: action.payload.id,
+        speaker: action.payload.speaker,
+        content: "",
+        timeStamp: new Date(),
+      };
+      state.contents.push(current);
+    },
+    updateContent: (state, action: PayloadAction<{ content: string }>) => {
+      state.contents[state.contents.length - 1].content =
+        action.payload.content;
+    },
+    removeContent: (state) => {
+      state.contents.pop();
+    },
   },
 });
 
-export const { initializeChatState } = slice.actions;
+export const {
+  initializeChatState,
+  triggerChat,
+  updateContent,
+  removeContent,
+} = slice.actions;
 
 export const SEND_RECORD = "test/GET_CHECK_SESSION" as const;
 
