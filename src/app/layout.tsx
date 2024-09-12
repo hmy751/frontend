@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
-import ChakraProvider from "../styles/ChakraProvider";
-import StoreProvider from "@/store/redux/StoreProvider";
+import ChakraProvider from "./_providers/ChakraProvider";
+import StoreProvider from "./_providers/StoreProvider";
 import { theme } from "@/styles/theme";
 import AudioPlayer from "../components/AudioPlayer";
 
