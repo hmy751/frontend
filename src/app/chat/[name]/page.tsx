@@ -2,12 +2,13 @@
 
 import { useRef, useEffect, useState } from "react";
 import { Box, Flex } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import InterviewerProfile from "./_components/InterviewerProfile";
 import ChatArticle from "./_components/ChatArticle";
 import RecordButton from "./_components/RecordButton";
 import { selectChat } from "@/store/redux/features/chat/selector";
+import { initializeChatState } from "@/store/redux/features/chat/slice";
 
 const InterviewerProfileWrapper = ({
   children,
@@ -40,6 +41,13 @@ const ChatWrapper = ({ children }: { children: React.ReactNode }) => {
 
 export default function Page() {
   const chatContents = useSelector(selectChat);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(initializeChatState(null));
+    };
+  }, []);
 
   return (
     <Box
