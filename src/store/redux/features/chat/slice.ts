@@ -4,7 +4,6 @@ import type { StatusType } from "@/store/redux/type";
 
 interface ChatContent {
   status: StatusType;
-  id: bigint | null;
   speaker: "user" | "bot";
   content: string;
   timeStamp: Date;
@@ -31,11 +30,10 @@ const slice = createSlice({
     },
     triggerChat: (
       state,
-      action: PayloadAction<{ id: bigint; speaker: "user" | "bot" }>
+      action: PayloadAction<{ speaker: "user" | "bot" }>
     ) => {
       const current = {
         status: "loading" as "loading",
-        id: action.payload.id,
         speaker: action.payload.speaker,
         content: "",
         timeStamp: new Date(),
