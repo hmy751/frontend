@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={noto_sans_kr.className}>
-        <ChakraProvider theme={theme}>
+        <ChakraProvider theme={theme} resetCSS={false}>
           <StoreProvider>{children}</StoreProvider>
         </ChakraProvider>
         <AudioPlayer />
