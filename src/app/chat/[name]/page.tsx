@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useRef, useEffect, useState } from "react";
 import { Box, Flex } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,7 +8,10 @@ import { useSelector, useDispatch } from "react-redux";
 import InterviewerProfile from "./_components/InterviewerProfile";
 import ChatArticle from "./_components/ChatArticle";
 import RecordButton from "./_components/RecordButton";
-import { selectChat } from "@/store/redux/features/chat/selector";
+import {
+  selectChat,
+  selectChatLimit,
+} from "@/store/redux/features/chat/selector";
 import {
   initializeChatState,
   START_CHAT,
@@ -69,8 +73,10 @@ const RecordButtonWrapper = ({ children }: { children: React.ReactNode }) => {
 export default function Page() {
   const chatContents = useSelector(selectChat);
   const dispatch = useDispatch();
-  // const { user, isLoggedIn, setUser, clearUser } = useUserStore();
+  const chatLimit = useSelector(selectChatLimit);
+  const router = useRouter();
 
+  // const { user, isLoggedIn, setUser, clearUser } = useUserStore();
   useEffect(() => {
     try {
       (async function init() {
@@ -98,6 +104,12 @@ export default function Page() {
       dispatch(initializeChatState(null));
     };
   }, []);
+
+  useEffect(() => {
+    if (chatLimit) {
+      router.push("/result");
+    }
+  }, [chatLimit]);
 
   return (
     <Box

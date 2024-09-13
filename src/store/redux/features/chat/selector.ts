@@ -1,5 +1,7 @@
 import { RootState } from "@/store/redux/rootStore";
 
+const CHAT_LIMIT = 21;
+
 export const selectChat = (state: RootState) => state.chat.contents;
 export const selectLastBotChatStatus = (state: RootState) => {
   const lastChat = state.chat.contents[state.chat.contents.length - 1];
@@ -11,5 +13,8 @@ export const selectLastBotChatStatus = (state: RootState) => {
   return null;
 };
 export const selectChatId = (state: RootState) => {
-  state.chat.id;
+  return state.chat.id;
+};
+export const selectChatLimit = (state: RootState) => {
+  return state.chat.contents.length >= CHAT_LIMIT;
 };
