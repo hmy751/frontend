@@ -10,7 +10,10 @@ import {
   Input,
   keyframes,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import useUserStore from "@/store/useUserStore";
 
 const neonGlow = keyframes`
   0% { box-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00, 0 0 20px #00FF00; }
@@ -20,14 +23,43 @@ const neonGlow = keyframes`
 
 const Mainpage = () => {
   const [nickname, setNickname] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const router = useRouter();
+
+  const { setUser } = useUserStore();
+
+  const handleNicknameInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setNickname(e.target.value);
   };
 
-  const handleSubmit = () => {
-    alert(`Your nickname: ${nickname}`);
+  const handleCategoryInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setCategory(e.target.value);
   };
+
+  const login = async () => {
+    const response = await fetch("http://localhost:3001/login", {
+      body: JSON.stringify({ name: nickname, developmentCategory: category }),
+    });
+    return response.json();
+  };
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      setUser({ id: data.id, name: data.name, imageSrc: "" });
+      router.push("/interviwer");
+    },
+  });
+
+  const handleSubmit = () => {
+    mutate();
+  };
+
   return (
     <Box
       display="flex"
@@ -60,8 +92,29 @@ const Mainpage = () => {
             </FormLabel>
             <Input
               value={nickname}
-              onChange={handleInputChange}
+              onChange={handleNicknameInputChange}
               placeholder="Enter your nickname"
+              size="lg"
+              focusBorderColor="#00FF00"
+              bg="gray.800"
+              borderColor="gray.600"
+              color="white"
+              _hover={{
+                borderColor: "#00FF00",
+              }}
+              _focus={{
+                boxShadow: "0px 0px 10px #00FF00",
+              }}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel color="gray.300" fontSize="lg">
+              Category
+            </FormLabel>
+            <Input
+              value={category}
+              onChange={handleCategoryInputChange}
+              placeholder="Enter your category"
               size="lg"
               focusBorderColor="#00FF00"
               bg="gray.800"
