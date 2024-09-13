@@ -5,6 +5,7 @@ interface Interviewer {
   name: string;
   imgUrl: string;
   mbti: string;
+  description: string;
 }
 
 interface InterviewerState {
