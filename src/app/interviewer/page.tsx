@@ -31,7 +31,7 @@ interface Interviewer {
 
 const InterviewerChoicePage: React.FC = () => {
   const [selectedInterviewer, setSelectedInterviewer] =
-    React.useState<Interviewer | null>(null);
+    React.useState<Interviewer | null>(interviewerList[0]);
 
   const { play } = useAudioStore();
 
@@ -50,9 +50,7 @@ const InterviewerChoicePage: React.FC = () => {
         }}
       >
         <Camera />
-        <Background
-          imgUrl={selectedInterviewer?.imgUrl || interviewerList[0].imgUrl}
-        />
+        <Background imageUrl={selectedInterviewer?.imgUrl || ""} />
         {interviewerList.map((interviewer, index) => (
           <InterviewerCard
             key={interviewer.id}
