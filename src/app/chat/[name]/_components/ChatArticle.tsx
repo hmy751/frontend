@@ -1,6 +1,6 @@
 import { createContext, useMemo, useContext } from "react";
 import Avatar from "@/components/Avatar";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Skeleton } from "@chakra-ui/react";
 
 export type ChatType = "user" | "bot" | "";
 
@@ -29,9 +29,21 @@ function ChatSpeech({ status, text }: ChatSpeechProps) {
   const { type } = useContext(ChatArticleContext);
   const color = type === "bot" ? "mainGray" : "mainBlue";
   return (
-    <Box borderRadius={"10px"} backgroundColor={color} padding={"10px"}>
-      {status === "loading" ? "..." : `${text}`}
-    </Box>
+    <>
+      {status === "loading" ? (
+        <Skeleton
+          width={"200px"}
+          height={"44px"}
+          borderRadius={"10px"}
+          color={color}
+          padding={"10px"}
+        />
+      ) : (
+        <Box borderRadius={"10px"} backgroundColor={color} padding={"10px"}>
+          {text}
+        </Box>
+      )}
+    </>
   );
 }
 
