@@ -50,10 +50,12 @@ const RecordButtonWrapper = ({ children }: { children: React.ReactNode }) => {
     <>
       <Flex
         alignItems={"center"}
-        height={"60px"}
+        height={"80px"}
         direction={"column"}
         marginTop={"40px"}
         gap={"20px"}
+        borderTop={"1px solid"}
+        borderColor={"gray.100"}
       >
         {children}
       </Flex>

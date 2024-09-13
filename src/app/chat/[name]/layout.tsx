@@ -1,14 +1,27 @@
+import Avatar from "@/components/Avatar";
 import { Box, Flex } from "@chakra-ui/react";
+import useUserStore from "@/store/useUserStore";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  // const { user, isLoggedIn, setUser, clearUser } = useUserStore();
+
   return (
     <Flex flexDirection={"column"} minHeight={"100vh"}>
-      <Box
+      <Flex
         as="header"
         width="100%"
-        height="60px"
+        height="80px"
         backgroundColor={"#F3F6F7"}
-      ></Box>
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <Flex width={"100%"} maxWidth={726} gap={"10px"}>
+          <Avatar src={"/assets/images/elon_musk.png"} />
+          <Flex alignItems={"center"} as={"p"}>
+            유저 이름
+          </Flex>
+        </Flex>
+      </Flex>
       <Box
         as="section"
         width="100%"
