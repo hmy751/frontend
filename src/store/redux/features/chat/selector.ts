@@ -10,3 +10,6 @@ export const selectLastBotChatStatus = (state: RootState) => {
 
   return null;
 };
+export const selectChatId = (state: RootState) => {
+  state.chat.id;
+};
