@@ -1,9 +1,11 @@
-import { takeLatest, call, put } from "redux-saga/effects";
+import { takeLatest, call, put, takeEvery, select } from "redux-saga/effects";
 import {
   SEND_RECORD,
   triggerChat,
   updateContent,
   removeContent,
+  START_CHAT,
+  startChat,
 } from "./slice";
 import { delay } from "../../utils";
 
@@ -18,19 +20,24 @@ interface SendRecordAction {
 interface RequestInterviewAction {
   type: string;
   payload: {
-    // id: number;
-    // speaker: string;
+    chatId: number;
     content: string;
   };
 }
+const selectChatState = (state) => state.chat.id;
 
 function* requestInterviewSaga(action: RequestInterviewAction) {
   try {
+    if (action.type === START_CHAT) {
+      yield put(startChat({ id: action.payload.chatId }));
+    }
+    const chatId = yield select(selectChatState);
+
     yield put(triggerChat({ speaker: "bot" }));
     yield call(delay, 500);
     const response: Response = yield call(
       fetch,
-      "http://localhost:3030/interview/4/contents",
+      `http://localhost:3030/interview/${chatId}/contents`,
       {
         method: "POST",
         headers: {
@@ -92,4 +99,8 @@ function* speechToTextSaga(
 
 export function* watchRecord() {
   yield takeLatest(SEND_RECORD, speechToTextSaga);
+}
+
+export function* watchStartChat() {
+  yield takeLatest(START_CHAT, requestInterviewSaga);
 }
