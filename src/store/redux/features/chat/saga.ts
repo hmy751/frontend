@@ -18,6 +18,8 @@ interface SendRecordAction {
 interface RequestInterviewAction {
   type: string;
   payload: {
+    // id: number;
+    // speaker: string;
     content: string;
   };
 }
@@ -26,26 +28,28 @@ function* requestInterviewSaga(action: RequestInterviewAction) {
   try {
     yield put(triggerChat({ speaker: "bot" }));
     yield call(delay, 500);
+    const response: Response = yield call(
+      fetch,
+      "http://localhost:3030/interview/4/contents",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content: action.payload.content,
+        }),
+      }
+    );
 
-    // const response: Response = yield call(
-    //   fetch,
-    //   "localhost:3000/interview/:id/contents",
-    //   {
-    //     method: "POST"
-    //     body: aciton.payload.content
-    //   }
-    // );
+    if (!response.ok) {
+      throw new Error("STT API request failed");
+    }
 
-    // if (!response.ok) {
-    //   throw new Error("STT API request failed");
-    // }
+    const data = yield response.json();
 
-    // const data = yield response.json();
-
-    const text = "테스트테스트테스트테스트";
-
-    if (text) {
-      yield put(updateContent({ content: text as unknown as string }));
+    if (data.content) {
+      yield put(updateContent({ content: data.content as unknown as string }));
     } else {
       yield put(removeContent());
     }

@@ -91,12 +91,16 @@ export default function RecordButton() {
   };
 
   return (
-    <Avatar
-      width={"40px"}
-      height={"40px"}
-      src={recordingState()}
-      onClick={handleRecord}
-      style={{ cursor: "pointer" }}
-    />
+    <>
+      <Avatar
+        width={"40px"}
+        height={"40px"}
+        src={recordingState()}
+        onClick={handleRecord}
+        style={{
+          cursor: `${isRecording === "recording" ? "not-allowed" : "cursor"}`,
+        }}
+      />
+    </>
   );
 }

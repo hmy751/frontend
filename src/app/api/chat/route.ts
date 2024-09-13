@@ -1,6 +1,5 @@
-const CLIENT_SECRET = "61d0e6ee192c468dafacbe9a0f22b812";
-const INVOKE_URL =
-  "https://clovaspeech-gw.ncloud.com/external/v1/9004/a5a9d1c6d0ab5535899e9fe5f94da05b0b0d32843fa144ea8f7f9de46e2655fb";
+const CLIENT_SECRET = process.env.NEXT_PUBLIC_CLIENT_SECRET as string;
+const INVOKE_URL = process.env.NEXT_PUBLIC_INVOKE_URL as string;
 
 export async function POST(req: Request) {
   try {

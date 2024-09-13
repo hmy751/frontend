@@ -69,6 +69,17 @@ export default function Page() {
   // const { user, isLoggedIn, setUser, clearUser } = useUserStore();
 
   useEffect(() => {
+    try {
+      // (async function init() {
+      //   await fetch("http://localhost:3030/interview", {
+      //     method: "POST",
+      //     body: {
+      //       interviewerId: 2,
+      //       reviewerId: 2,
+      //     },
+      //   });
+      // })();
+    } catch (err) {}
     return () => {
       dispatch(initializeChatState(null));
     };
