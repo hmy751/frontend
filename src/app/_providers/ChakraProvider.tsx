@@ -7,13 +7,17 @@ import { Dict } from "@chakra-ui/utils";
 export default function Providers({
   theme,
   children,
+  resetCSS,
 }: {
   theme: Dict;
   children: React.ReactNode;
+  resetCSS: boolean;
 }) {
   return (
     <CacheProvider>
-      <ChakraProvider theme={theme}>{children}</ChakraProvider>
+      <ChakraProvider resetCSS={resetCSS} theme={theme}>
+        {children}
+      </ChakraProvider>
     </CacheProvider>
   );
 }

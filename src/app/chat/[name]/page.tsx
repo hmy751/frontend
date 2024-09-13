@@ -32,7 +32,28 @@ const InterviewerProfileWrapper = ({
 const ChatWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <Flex direction={"column"} marginTop={"40px"} gap={"20px"}>
+      <Flex
+        height={"100%"}
+        direction={"column"}
+        marginTop={"40px"}
+        gap={"20px"}
+      >
+        {children}
+      </Flex>
+    </>
+  );
+};
+
+const RecordButtonWrapper = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <>
+      <Flex
+        alignItems={"center"}
+        height={"60px"}
+        direction={"column"}
+        marginTop={"40px"}
+        gap={"20px"}
+      >
         {children}
       </Flex>
     </>
@@ -53,8 +74,8 @@ export default function Page() {
     <Box
       width={"100%"}
       maxWidth={726}
+      flex={1}
       display="flex"
-      height="100%"
       flexDirection={"column"}
     >
       <InterviewerProfileWrapper>
@@ -78,8 +99,29 @@ export default function Page() {
             </ChatArticle>
           );
         })}
+        {/* <ChatArticle type={"bot"}>
+          {"bot" === "bot" ? (
+            <>
+              <ChatArticle.Avatar src="/assets/images/elon_musk.png" />
+              <ChatArticle.Speech
+                status={status}
+                text={"fjifjidjsiofjsiofjo"}
+              />
+            </>
+          ) : (
+            <>
+              <ChatArticle.Speech
+                status={status}
+                text={"fjifjidjsiofjsiofjo"}
+              />
+              <ChatArticle.Avatar src="/assets/images/elon_musk.png" />
+            </>
+          )}
+        </ChatArticle> */}
       </ChatWrapper>
-      <RecordButton />
+      <RecordButtonWrapper>
+        <RecordButton />
+      </RecordButtonWrapper>
     </Box>
   );
 }

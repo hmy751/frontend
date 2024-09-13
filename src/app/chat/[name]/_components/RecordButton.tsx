@@ -5,6 +5,8 @@ import Recorder from "recorder-js";
 import { useDispatch } from "react-redux";
 import { SEND_RECORD } from "@/store/redux/features/chat/slice";
 
+import Avatar from "@/components/Avatar";
+
 export default function RecordButton() {
   const recorderRef = useRef<Recorder | null>(null);
   const [isRecording, setIsRecording] = useState<
@@ -13,6 +15,8 @@ export default function RecordButton() {
   const dispatch = useDispatch();
 
   const handleRecord = async () => {
+    if (isRecording === "recording" || isRecording === "finished") return;
+
     const { mediaDevices } = navigator;
     const stream = await mediaDevices.getUserMedia({ audio: true });
 
@@ -76,15 +80,23 @@ export default function RecordButton() {
 
   const recordingState = () => {
     if (isRecording === null || isRecording === "finished") {
-      return "녹음";
+      return "/assets/images/record.png";
     }
 
     if (isRecording === "recording") {
-      return "녹음중";
+      return "/assets/images/recording.png";
     }
 
-    return "녹음";
+    return "/assets/images/record.png";
   };
 
-  return <button onClick={handleRecord}>{recordingState()}</button>;
+  return (
+    <Avatar
+      width={"40px"}
+      height={"40px"}
+      src={recordingState()}
+      onClick={handleRecord}
+      style={{ cursor: "pointer" }}
+    />
+  );
 }
