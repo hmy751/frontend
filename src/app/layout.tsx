@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import ChakraProvider from "./_providers/ChakraProvider";
-import StoreProvider from "./_providers/StoreProvider";
+import ReduxStoreProvider from "./_providers/ReduxStoreProvider";
 import { theme } from "@/styles/theme";
 import AudioPlayer from "../components/AudioPlayer";
 
@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={noto_sans_kr.className}>
         <ChakraProvider theme={theme} resetCSS={false}>
-          <StoreProvider>{children}</StoreProvider>
+          <ReduxStoreProvider>{children}</ReduxStoreProvider>
         </ChakraProvider>
         <AudioPlayer />
       </body>
