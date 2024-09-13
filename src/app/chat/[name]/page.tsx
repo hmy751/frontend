@@ -9,7 +9,7 @@ import ChatArticle from "./_components/ChatArticle";
 import RecordButton from "./_components/RecordButton";
 import { selectChat } from "@/store/redux/features/chat/selector";
 import { initializeChatState } from "@/store/redux/features/chat/slice";
-import { useUserContext } from "@/app/_providers/UserProvider";
+import useUserStore from "@/store/useUserStore";
 
 const InterviewerProfileWrapper = ({
   children,
@@ -64,7 +64,7 @@ const RecordButtonWrapper = ({ children }: { children: React.ReactNode }) => {
 export default function Page() {
   const chatContents = useSelector(selectChat);
   const dispatch = useDispatch();
-  // const { user, isLoggedIn, setUser, clearUser } = useUserContext();
+  // const { user, isLoggedIn, setUser, clearUser } = useUserStore();
 
   useEffect(() => {
     return () => {
