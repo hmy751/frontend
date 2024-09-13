@@ -1,10 +1,13 @@
 "use client";
 
-import { Box, Flex, Grid, Stack } from "@chakra-ui/react";
-import React from "react";
-import Image from "next/image";
-import InterviewerCard from "./_components/InterviewerCard";
 import { useAudioStore } from "@/store/useAudioStore";
+import { Box } from "@chakra-ui/react";
+import { Canvas } from "@react-three/fiber";
+import React from "react";
+import Background from "./_components/Background";
+import Camera from "./_components/Camera";
+import InterviewerCard from "./_components/InterviewerCard";
+import { nomalizeIndex } from "./_utils/convert";
 
 const interviewerList = [
   {
@@ -26,43 +29,41 @@ interface Interviewer {
   imgUrl: string;
 }
 
-const InterviewerChoicePage = () => {
+const InterviewerChoicePage: React.FC = () => {
   const [selectedInterviewer, setSelectedInterviewer] =
-    React.useState<Interviewer | null>(null);
+    React.useState<Interviewer | null>(interviewerList[0]);
 
   const { play } = useAudioStore();
 
-  return (
-    <Flex
-      mx={"auto"}
-      w={"full"}
-      maxW={1200}
-      justifyContent={"center"}
-      alignItems={"center"}
-      position={"relative"}
-    >
-      <Image
-        src={selectedInterviewer?.imgUrl || interviewerList[0].imgUrl}
-        width={1000}
-        height={800}
-        className=""
-        alt="Background Imag"
-      />
+  const handleClick = (interviewer: Interviewer) => {
+    setSelectedInterviewer(interviewer);
+  };
 
-      <Flex gap={4} position={"absolute"} bottom={10}>
-        {interviewerList.map((interviewer) => (
+  return (
+    <Box>
+      <Canvas
+        style={{
+          display: "block",
+          width: "100vw",
+          aspectRatio: "16/9",
+          margin: "0 auto",
+        }}
+      >
+        <Camera />
+        <Background imageUrl={selectedInterviewer?.imgUrl || ""} />
+        {interviewerList.map((interviewer, index) => (
           <InterviewerCard
             key={interviewer.id}
-            id={interviewer.id}
             imgUrl={interviewer.imgUrl}
+            position={[nomalizeIndex(index, interviewerList.length), -2.5, 0]}
             onClick={() => {
-              setSelectedInterviewer(interviewer);
+              handleClick(interviewer);
               play();
             }}
           />
         ))}
-      </Flex>
-    </Flex>
+      </Canvas>
+    </Box>
   );
 };
 
