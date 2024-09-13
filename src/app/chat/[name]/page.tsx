@@ -48,6 +48,7 @@ const RecordButtonWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Flex
+        alignItems={"center"}
         height={"60px"}
         direction={"column"}
         marginTop={"40px"}
