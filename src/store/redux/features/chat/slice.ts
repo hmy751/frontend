@@ -10,10 +10,12 @@ interface ChatContent {
 }
 
 interface ChatState {
+  id: number | null;
   contents: ChatContent[];
 }
 
 const initialState: ChatState = {
+  id: null,
   contents: [],
 };
 
@@ -30,6 +32,9 @@ const slice = createSlice({
       } else {
         state.contents = [];
       }
+    },
+    startChat: (state, action: PayloadAction<{ id: number }>) => {
+      state.id = action.payload.id;
     },
     triggerChat: (
       state,
@@ -59,8 +64,10 @@ export const {
   triggerChat,
   updateContent,
   removeContent,
+  startChat,
 } = slice.actions;
 
-export const SEND_RECORD = "test/GET_CHECK_SESSION" as const;
+export const SEND_RECORD = "SEND_RECORD" as const;
+export const START_CHAT = "START_CHAT" as const;
 
 export default slice.reducer;

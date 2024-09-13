@@ -8,7 +8,10 @@ import InterviewerProfile from "./_components/InterviewerProfile";
 import ChatArticle from "./_components/ChatArticle";
 import RecordButton from "./_components/RecordButton";
 import { selectChat } from "@/store/redux/features/chat/selector";
-import { initializeChatState } from "@/store/redux/features/chat/slice";
+import {
+  initializeChatState,
+  START_CHAT,
+} from "@/store/redux/features/chat/slice";
 import useUserStore from "@/store/useUserStore";
 
 const InterviewerProfileWrapper = ({
@@ -70,15 +73,26 @@ export default function Page() {
 
   useEffect(() => {
     try {
-      // (async function init() {
-      //   await fetch("http://localhost:3030/interview", {
-      //     method: "POST",
-      //     body: {
-      //       interviewerId: 2,
-      //       reviewerId: 2,
-      //     },
-      //   });
-      // })();
+      (async function init() {
+        const result = await fetch("http://localhost:3030/interview", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            interviewerId: 2,
+            reviewerId: 2,
+          }),
+        });
+        const { id } = await result.json();
+        dispatch({
+          type: START_CHAT,
+          payload: {
+            chatId: id,
+            content: "안녕하세요. 간단히 자기소개 부탁드립니다.",
+          },
+        });
+      })();
     } catch (err) {}
     return () => {
       dispatch(initializeChatState(null));
