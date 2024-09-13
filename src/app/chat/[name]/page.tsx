@@ -17,6 +17,7 @@ import {
   START_CHAT,
 } from "@/store/redux/features/chat/slice";
 import useUserStore from "@/store/useUserStore";
+import { useInterviewerStore } from "@/store/useInterviewerStore";
 
 const InterviewerProfileWrapper = ({
   children,
@@ -75,6 +76,7 @@ export default function Page() {
   const dispatch = useDispatch();
   const chatLimit = useSelector(selectChatLimit);
   const router = useRouter();
+  const { interviewer } = useInterviewerStore();
 
   // const { user, isLoggedIn, setUser, clearUser } = useUserStore();
   useEffect(() => {
@@ -86,7 +88,7 @@ export default function Page() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            interviewerId: 2,
+            interviewerId: interviewer?.id,
             reviewerId: 2,
           }),
         });
@@ -120,7 +122,11 @@ export default function Page() {
       flexDirection={"column"}
     >
       <InterviewerProfileWrapper>
-        <InterviewerProfile />
+        <InterviewerProfile
+          src={interviewer?.imgUrl}
+          name={interviewer?.name}
+          description={interviewer?.description}
+        />
       </InterviewerProfileWrapper>
       <ChatWrapper>
         {chatContents.map(({ speaker, content, status, timeStamp }) => {
@@ -128,7 +134,7 @@ export default function Page() {
             <ChatArticle type={speaker}>
               {speaker === "bot" ? (
                 <>
-                  <ChatArticle.Avatar src="/assets/images/elon_musk.png" />
+                  <ChatArticle.Avatar src={interviewer?.imgUrl} />
                   <ChatArticle.Speech status={status} text={content} />
                 </>
               ) : (

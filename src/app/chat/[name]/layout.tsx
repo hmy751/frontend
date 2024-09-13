@@ -1,9 +1,10 @@
+"use client";
 import Avatar from "@/components/Avatar";
 import { Box, Flex } from "@chakra-ui/react";
 import useUserStore from "@/store/useUserStore";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  // const { user, isLoggedIn, setUser, clearUser } = useUserStore();
+  const { user } = useUserStore();
 
   return (
     <Flex flexDirection={"column"} minHeight={"100vh"}>
@@ -18,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Flex width={"100%"} maxWidth={726} gap={"10px"}>
           <Avatar src={"/assets/images/elon_musk.png"} />
           <Flex alignItems={"center"} as={"p"}>
-            유저 이름
+            {user?.name}
           </Flex>
         </Flex>
       </Flex>
