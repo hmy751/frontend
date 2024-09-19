@@ -52,7 +52,7 @@ const Mainpage = () => {
     mutationFn: login,
     onSuccess: (data) => {
       setUser({ id: data.id, name: data.name, imageSrc: "" });
-      router.push("/interviwer");
+      router.push("/interviewer");
     },
   });
 
