@@ -32,6 +32,8 @@ const slice = createSlice({
       } else {
         state.contents = [];
       }
+
+      state.id = null;
     },
     startChat: (state, action: PayloadAction<{ id: number }>) => {
       state.id = action.payload.id;
