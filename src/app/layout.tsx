@@ -5,12 +5,7 @@ import ReduxStoreProvider from "./_providers/ReduxStoreProvider";
 import { theme } from "@/styles/theme";
 import AudioPlayer from "../components/AudioPlayer";
 import QueryProviders from "./_providers/QueryProvider";
-
-import { initMSW } from "@/mocks";
-
-if (process.env.USE_MSW) {
-  initMSW();
-}
+import { MSWComponent } from "@/components/MSWComponent";
 
 const noto_sans_kr = Noto_Sans_KR({
   subsets: ["latin"],
@@ -25,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={noto_sans_kr.className}>
+        <MSWComponent />
         <QueryProviders>
           <ChakraProvider theme={theme} resetCSS={false}>
             <ReduxStoreProvider>{children}</ReduxStoreProvider>
