@@ -6,17 +6,10 @@ import { theme } from "@/styles/theme";
 import AudioPlayer from "../components/AudioPlayer";
 import QueryProviders from "./_providers/QueryProvider";
 
-import { setupServer } from "msw/node";
-import { setupWorker } from "msw/browser";
+import { initMSW } from "@/mocks";
 
 if (process.env.USE_MSW) {
-  if (typeof window === "undefined") {
-    const server = setupServer([]);
-    server.listen();
-  } else {
-    const worker = setupWorker([]);
-    worker.start();
-  }
+  initMSW();
 }
 
 const noto_sans_kr = Noto_Sans_KR({
