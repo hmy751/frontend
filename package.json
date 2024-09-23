@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev:msw": "next dev USE_MSW=true",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -46,7 +47,13 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.8",
     "eslint-plugin-storybook": "^0.8.0",
+    "msw": "^2.4.9",
     "storybook": "^8.2.9",
     "typescript": "^5"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
