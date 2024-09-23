@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev:msw": "next dev USE_MSW=true",
+    "dev:msw": "USE_MSW=true next dev",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
