@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev:msw": "NEXT_PUBLIC_USE_MSW=true next dev",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -19,6 +20,7 @@
     "@tanstack/react-query": "^5.56.2",
     "framer-motion": "^11.5.4",
     "glslify": "^7.1.1",
+    "msw": "^2.4.9",
     "next": "14.2.8",
     "react": "^18",
     "react-dom": "^18",
@@ -48,5 +50,10 @@
     "eslint-plugin-storybook": "^0.8.0",
     "storybook": "^8.2.9",
     "typescript": "^5"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
