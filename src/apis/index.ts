@@ -1,13 +1,16 @@
-const baseURL = process.env.NEXT_PUBLIC_API_HOST;
+export const baseURL = process.env.NEXT_PUBLIC_API_HOST;
 
-type GetFn = (arg: {
+export const get = async <Result>({
+  path,
+  headers,
+  body,
+  externalUrl,
+}: {
   path?: string;
   headers?: Record<string, string>;
   body?: object;
   externalUrl?: string;
-}) => Promise<Response | undefined>;
-
-export const get: GetFn = async ({ path, headers, body, externalUrl }) => {
+}) => {
   try {
     let url;
 
@@ -27,7 +30,7 @@ export const get: GetFn = async ({ path, headers, body, externalUrl }) => {
     };
 
     const result = await fetch(url, options);
-    const data = await result.json();
+    const data: Result = await result.json();
 
     if (!result.ok) {
       throw Error("Http Error");
@@ -38,14 +41,17 @@ export const get: GetFn = async ({ path, headers, body, externalUrl }) => {
   }
 };
 
-type PostFn = (arg: {
+export const post = async <Result>({
+  path,
+  headers,
+  body,
+  externalUrl,
+}: {
   path?: string;
   headers?: Record<string, string>;
   body?: object;
   externalUrl?: string;
-}) => Promise<Response | undefined>;
-
-export const post: PostFn = async ({ path, headers, body, externalUrl }) => {
+}) => {
   try {
     let url;
 
@@ -65,7 +71,7 @@ export const post: PostFn = async ({ path, headers, body, externalUrl }) => {
     };
 
     const result = await fetch(url, options);
-    const data = await result.json();
+    const data: Result = await result.json();
 
     if (!result.ok) {
       throw Error("Http Error");
