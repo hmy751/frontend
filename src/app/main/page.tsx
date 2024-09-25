@@ -14,6 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import useUserStore from "@/store/useUserStore";
+import { fetchLogin } from "@/apis/user";
 
 const neonGlow = keyframes`
   0% { box-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00, 0 0 20px #00FF00; }
@@ -42,16 +43,18 @@ const Mainpage = () => {
   };
 
   const login = async () => {
-    const response = await fetch("http://localhost:3001/login", {
-      body: JSON.stringify({ name: nickname, developmentCategory: category }),
+    const data = await fetchLogin({
+      name: nickname,
+      developmentCategory: category,
     });
-    return response.json();
+    return data;
   };
 
   const { mutate, isPending } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      setUser({ id: data.id, name: data.name, imageSrc: "" });
+      if (!data) return;
+      setUser({ id: data?.id, name: data?.name, imageSrc: data?.imageSrc });
       router.push("/interviewer");
     },
   });
