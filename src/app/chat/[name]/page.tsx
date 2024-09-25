@@ -18,6 +18,7 @@ import {
 } from "@/store/redux/features/chat/slice";
 import useUserStore from "@/store/useUserStore";
 import { useInterviewerStore } from "@/store/useInterviewerStore";
+import { fetchInterview } from "@/apis/interview";
 
 const InterviewerProfileWrapper = ({
   children,
@@ -77,26 +78,24 @@ export default function Page() {
   const chatLimit = useSelector(selectChatLimit);
   const router = useRouter();
   const { interviewer } = useInterviewerStore();
+  const { user } = useUserStore();
 
-  // const { user, isLoggedIn, setUser, clearUser } = useUserStore();
   useEffect(() => {
+    if (!user || !interviewer) return;
+
     try {
       (async function init() {
-        const result = await fetch("http://localhost:3030/interview", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            interviewerId: interviewer?.id,
-            reviewerId: 2,
-          }),
+        const data = await fetchInterview({
+          interviewerId: interviewer?.id,
+          reviewerId: user.id,
         });
-        const { id } = await result.json();
+
+        if (!data?.id) return;
+
         dispatch({
           type: START_CHAT,
           payload: {
-            chatId: id,
+            chatId: data?.id,
             content: "안녕하세요. 간단히 자기소개 부탁드립니다.",
           },
         });
@@ -105,13 +104,15 @@ export default function Page() {
     return () => {
       dispatch(initializeChatState(null));
     };
-  }, []);
+  }, [user, interviewer]);
 
   useEffect(() => {
     if (chatLimit) {
       router.push("/result");
     }
   }, [chatLimit]);
+
+  if (!user || !interviewer) return null;
 
   return (
     <Box
@@ -129,7 +130,7 @@ export default function Page() {
         />
       </InterviewerProfileWrapper>
       <ChatWrapper>
-        {chatContents.map(({ speaker, content, status, timeStamp }) => {
+        {chatContents.map(({ speaker, content, status }) => {
           return (
             <ChatArticle type={speaker}>
               {speaker === "bot" ? (
@@ -140,31 +141,12 @@ export default function Page() {
               ) : (
                 <>
                   <ChatArticle.Speech status={status} text={content} />
-                  <ChatArticle.Avatar src="/assets/images/elon_musk.png" />
+                  <ChatArticle.Avatar src={user?.imageSrc} />
                 </>
               )}
             </ChatArticle>
           );
         })}
-        {/* <ChatArticle type={"bot"}>
-          {"bot" === "bot" ? (
-            <>
-              <ChatArticle.Avatar src="/assets/images/elon_musk.png" />
-              <ChatArticle.Speech
-                status={status}
-                text={"fjifjidjsiofjsiofjo"}
-              />
-            </>
-          ) : (
-            <>
-              <ChatArticle.Speech
-                status={status}
-                text={"fjifjidjsiofjsiofjo"}
-              />
-              <ChatArticle.Avatar src="/assets/images/elon_musk.png" />
-            </>
-          )}
-        </ChatArticle> */}
       </ChatWrapper>
       <RecordButtonWrapper>
         <RecordButton />
