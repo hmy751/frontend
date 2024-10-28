@@ -6,13 +6,12 @@ interface UserData {
   imageSrc: string;
 }
 
-export const fetchLogin = async ({
-  name,
-  developmentCategory,
-}: {
+export interface LoginBody {
   name: string;
   developmentCategory: string;
-}) => {
+}
+
+export const fetchLogin = async ({ name, developmentCategory }: LoginBody) => {
   return post<UserData>({
     path: "login",
     body: {

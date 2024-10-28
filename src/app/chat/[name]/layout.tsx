@@ -16,12 +16,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         justifyContent={"center"}
         alignItems={"center"}
       >
-        <Flex width={"100%"} maxWidth={726} gap={"10px"}>
-          <Avatar src={"/assets/images/elon_musk.png"} />
-          <Flex alignItems={"center"} as={"p"}>
-            {user?.name}
+        {user && (
+          <Flex width={"100%"} maxWidth={726} gap={"10px"}>
+            <Avatar src={user?.imageSrc} />
+            <Flex alignItems={"center"} as={"p"}>
+              {user?.name}
+            </Flex>
           </Flex>
-        </Flex>
+        )}
       </Flex>
       <Box
         as="section"

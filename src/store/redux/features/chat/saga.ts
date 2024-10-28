@@ -8,6 +8,13 @@ import {
   startChat,
 } from "./slice";
 import { delay } from "../../utils";
+import { RootState } from "@/store/redux/rootStore";
+import {
+  fetchAIChat,
+  fetchSpeechToText,
+  AIChatData,
+  SpeechToTextData,
+} from "@/apis/interview";
 
 interface SendRecordAction {
   type: string;
@@ -24,36 +31,22 @@ interface RequestInterviewAction {
     content: string;
   };
 }
-const selectChatState = (state) => state.chat.id;
+const selectChatState = (state: RootState) => state.chat.id;
 
 function* requestInterviewSaga(action: RequestInterviewAction) {
   try {
     if (action.type === START_CHAT) {
       yield put(startChat({ id: action.payload.chatId }));
     }
-    const chatId = yield select(selectChatState);
+    const chatId: number = yield select(selectChatState);
 
     yield put(triggerChat({ speaker: "bot" }));
     yield call(delay, 500);
-    const response: Response = yield call(
-      fetch,
-      `http://localhost:3030/interview/${chatId}/contents`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          content: action.payload.content,
-        }),
-      }
-    );
 
-    if (!response.ok) {
-      throw new Error("STT API request failed");
-    }
-
-    const data = yield response.json();
+    const data: AIChatData = yield call(fetchAIChat, {
+      chatId,
+      content: action.payload.content,
+    });
 
     if (data.content) {
       yield put(updateContent({ content: data.content as unknown as string }));
@@ -72,19 +65,12 @@ function* speechToTextSaga(
     yield put(triggerChat({ speaker: "user" }));
     yield call(delay, 500);
 
-    const response: Response = yield call(fetch, "/api/chat", {
-      method: "POST",
-      body: action.payload.formData,
+    const data: SpeechToTextData = yield call(fetchSpeechToText, {
+      formData: action.payload.formData,
     });
 
-    if (!response.ok) {
-      throw new Error("STT API request failed");
-    }
-
-    const data = yield response.json();
-
     if (data.text) {
-      yield put(updateContent({ content: data.text as unknown as string }));
+      yield put(updateContent({ content: data.text }));
       yield* requestInterviewSaga({
         type: "REQUEST_INTERVIEW",
         payload: { content: data.text as unknown as string },

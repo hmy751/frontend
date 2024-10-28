@@ -9,7 +9,7 @@ interface ChatContent {
   timeStamp: Date;
 }
 
-interface ChatState {
+export interface ChatState {
   id: number | null;
   contents: ChatContent[];
 }
